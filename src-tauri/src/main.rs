@@ -7,12 +7,12 @@ use tauri::Manager;
 use tauri::GlobalShortcutManager;
 use tauri::ActivationPolicy;
 
-const APP_NAME: &str = "Macopilot";
+const APP_NAME: &str = "MaxCopilot";
 const MAIN_WIN_LABEL: &str = "main-win";
 const QUITE_MENU_ITEM_LABEL: &str = "quit";
 const SETTINGS_MENU_ITEM_LABEL: &str = "settings";
 const CHAT_GPT_MENU_ITEM_LABEL: &str = "chat-gpt";
-const KEYBOARD_SHOTCUT: &str = "CTRL + G";
+const KEYBOARD_SHOTCUT: &str = "Alt + 2";
 
 fn init_window(app: &tauri::AppHandle) {
     let _window = WindowBuilder::new(
@@ -22,7 +22,7 @@ fn init_window(app: &tauri::AppHandle) {
     )
         .title(APP_NAME)
         .build()
-        .unwrap();
+        .expect("error while building window");
 }
 
 fn show_window(app: &tauri::AppHandle) {
@@ -46,7 +46,8 @@ fn toggle_window(app: &tauri::AppHandle) {
 
 fn do_toggle_window(window: &tauri::Window) {
     if let Ok(true) = window.is_visible() {
-        let _ = window.hide();
+        // let _ = window.hide();
+        let _ = window.set_focus();
     } else {
         let _ = window.show();
         let _ = window.set_focus();
@@ -102,7 +103,7 @@ fn create_menu() -> Menu {
 }
 
 fn on_setup(app: &mut tauri::App) {
-    app.set_activation_policy(ActivationPolicy::Accessory);
+    app.set_activation_policy(ActivationPolicy::Regular);
     let app_handle = app.handle();
     init_window(&app_handle);
     register_hot_key(app_handle);
